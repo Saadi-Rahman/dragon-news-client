@@ -1,13 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 
 const Login = () => {
-
+    const [error, setError] = useState('');
     const {signIn} = useContext(AuthContext);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || '/';
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -20,9 +23,13 @@ const Login = () => {
             const user = result.user;
             console.log(user);
             form.reset();
-            navigate('/');
+            setError('');
+            navigate(from, {replace: true});
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+            console.error(error);
+            setError(error.message);
+        })
     }
 
     return (
@@ -39,18 +46,13 @@ const Login = () => {
                     <Form.Control name="password" type="password" placeholder="Password" required />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
+                <div className='d-flex align-items-center mb-2'>
+                    <Button variant="primary fw-bold px-5 me-3" type="submit">Login</Button>
+                    <small className="text-danger fw-bold m-0">{error}</small>
+                </div>
 
-                <Button variant="primary fw-bold px-5 mb-1" type="submit">Login</Button>
-
-                <Form.Text className="text-danger ms-3">
-                    Error message !!!
-                </Form.Text>
-
-                <Form.Group>
-                    <small className="pb-2">Don't have an account? <Link to='/reigster'>Register</Link></small>
+                <Form.Group className='mb-3'>
+                    <small>Don't have an account? Go to <Link to='/reigster'>Register</Link></small>
                 </Form.Group>
             </Form>
         </div>

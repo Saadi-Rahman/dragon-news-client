@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 
 const Register = () => {
-
-    const { createUser } = useContext(AuthContext);
+    const [error, setError] = useState('');
+    const [accepted, setAccepted] = useState(false);
+    const { createUser, updateUserProfile } = useContext(AuthContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -21,9 +22,29 @@ const Register = () => {
         .then(result => {
             const user = result.user;
             console.log(user);
+            setError('');
             form.reset();
+            Navigate('/');
+            handleUpdateUserProfile(name, photoURL);
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+            console.error(error);
+            setError(error.message);
+        });
+    }
+
+    const handleUpdateUserProfile = (name, photoURL) => {
+        const profile = {
+            displayName: name,
+            photoURL: photoURL
+        }
+        updateUserProfile(profile)
+            .then(() => {})
+            .catch(error => console.error(error));
+    }
+
+    const handleAccepted = (event) => {
+        setAccepted(event.target.checked);
     }
 
     return (
@@ -51,17 +72,21 @@ const Register = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
+                    <Form.Check 
+                        type="checkbox" 
+                        onClick={handleAccepted}
+                        label={<>Accept <Link to='/terms'>Terms and conditions</Link></>} />
                 </Form.Group>
 
-                <Button variant="primary fw-bold mb-3 px-5" type="submit">Register</Button>
+                <div className='d-flex align-items-center mb-2'>
+                    <Button variant="primary fw-bold px-5 me-3" type="submit" disabled={!accepted}>
+                        Register
+                    </Button>
+                    <small className="text-danger fw-bold m-0">{error}</small>
+                </div>
 
-                <Form.Text className="text-danger ms-3">
-                    Error message !!!
-                </Form.Text>
-
-                <Form.Group>
-                    <small className="pb-2">Already have an account? Go to <Link to='/login'>Login</Link></small>
+                <Form.Group className='mb-3'>
+                    <small>Already have an account? Go to <Link to='/login'>Login</Link></small>
                 </Form.Group>
             </Form>
         </div>
