@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthProvider/AuthProvider';
 
 /*
 1. Only allow authenticated user to visit the route
-2.
+2. when reload the page the user will not be logged out
 3. Redirect user to the route they wanted to go before login
 */
 
