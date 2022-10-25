@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { Image } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Dropdown from 'react-bootstrap/Dropdown';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import { FaDragon, FaPlus, FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthProvider/AuthProvider';
@@ -42,22 +43,41 @@ const Header = () => {
                     {
                         user?.uid ?
                         <>
-                            <Dropdown>
-                                <Dropdown.Toggle variant="outline-primary mb-2 mb-lg-0 me-lg-2" id="dropdown-basic">
-                                    <Image style={{width: '25px'}} roundedCircle src={user.photoURL}></Image>
-                                </Dropdown.Toggle>
-
-                                <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1">{user?.displayName}</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                            <button onClick={handleLogOut} className='btn btn-outline-primary mb-5 mb-lg-0'><FaSignOutAlt className='mb-1' /></button>
+                            <OverlayTrigger
+                                delay={{ hide: 400, show: 200 }}
+                                overlay={(props) => (
+                                <Tooltip {...props}>{user?.displayName}</Tooltip>
+                                )}
+                                placement="bottom"
+                                ><Button variant="outline-primary mb-2 mb-lg-0 me-lg-2"><Image style={{width: '25px'}} roundedCircle src={user.photoURL} alt="img"></Image></Button>
+                            </OverlayTrigger>
+                            <OverlayTrigger
+                                delay={{ hide: 400, show: 200 }}
+                                overlay={(props) => (
+                                <Tooltip {...props}>Logout</Tooltip>
+                                )}
+                                placement="bottom"
+                                ><Button onClick={handleLogOut} variant='outline-primary mb-5 mb-lg-0'><FaSignOutAlt className='mb-1' /></Button>
+                            </OverlayTrigger>
                         </>
                         :
                         <>
-                            <button className='btn btn-outline-primary px-1 py-0 mb-2 mb-lg-0 me-lg-2'>
-                            <FaUserCircle className='fs-5 m-2' /></button>
-                            <Link to='/login' className='btn btn-outline-primary  mb-5 mb-lg-0'><FaSignInAlt className='mb-1' /></Link>
+                            <OverlayTrigger
+                                delay={{ hide: 400, show: 200 }}
+                                overlay={(props) => (
+                                <Tooltip {...props}>User</Tooltip>
+                                )}
+                                placement="bottom"
+                                ><Button variant="outline-primary px-1 py-0 mb-2 mb-lg-0 me-lg-2"><FaUserCircle className='fs-5 m-2' /></Button>
+                            </OverlayTrigger>
+                            <OverlayTrigger
+                                delay={{ hide: 400, show: 200 }}
+                                overlay={(props) => (
+                                <Tooltip {...props}>Login</Tooltip>
+                                )}
+                                placement="bottom"
+                                ><Link to='/login' className='btn btn-outline-primary  mb-5 mb-lg-0'><FaSignInAlt className='mb-1' /></Link>
+                            </OverlayTrigger>
                         </>
                     }
                 </Nav>

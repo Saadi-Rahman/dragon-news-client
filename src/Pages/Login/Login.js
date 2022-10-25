@@ -26,31 +26,34 @@ const Login = () => {
     }
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control name="email" type="email" placeholder="Enter email" required />
-            </Form.Group>
+        <div>
+            <h2>Please Login</h2>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control name="email" type="email" placeholder="Enter email" required />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control name="password" type="password" placeholder="Password" required />
-            </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control name="password" type="password" placeholder="Password" required />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <Form.Check type="checkbox" label="Check me out" />
+                </Form.Group>
 
-            <Button variant="primary fw-bold px-5 mb-1" type="submit">Login</Button>
+                <Button variant="primary fw-bold px-5 mb-1" type="submit">Login</Button>
 
-            <Form.Text className="text-danger ms-3">
-                Error message !!!
-            </Form.Text>
+                <Form.Text className="text-danger ms-3">
+                    Error message !!!
+                </Form.Text>
 
-            <Form.Group>
-                <small className="pb-2">Don't have an account? <Link to='/reigster'>Register</Link></small>
-            </Form.Group>
-        </Form>
+                <Form.Group>
+                    <small className="pb-2">Don't have an account? <Link to='/reigster'>Register</Link></small>
+                </Form.Group>
+            </Form>
+        </div>
     );
 };
 
